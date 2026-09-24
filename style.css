@@ -1,0 +1,776 @@
+/* ============================================================
+   Alice Q. Wong — interactive resume
+   Design tokens lifted from the Figma mock "resume-bright-playful"
+   (file whxgg32nATtHsBAksnElTk, node 12:139).
+   ============================================================ */
+
+/* ---- Tokens ------------------------------------------------ */
+
+:root {
+  /* palette — light */
+  --bg:           #f9f9f9;
+  --ink:          #0f4c5c;
+  --ink-mute:     rgba(15, 76, 92, 0.55);
+  --accent:       #ff6b6b;
+  --accent-soft:  rgba(255, 107, 107, 0.08);
+  --accent-mid:   rgba(255, 107, 107, 0.22);
+  --on-accent:    #1a1a1a;                    /* text sitting on a coral fill */
+  --teal:         #0f4c5c;
+  --teal-soft:    rgba(15, 76, 92, 0.08);
+  --teal-mid:     rgba(15, 76, 92, 0.22);
+  --card:         #f0f2f5;
+  --strip-bg:     #0f4c5c;
+  --strip-fg:     #fffdf6;
+  --rule:         rgba(15, 76, 92, 0.12);
+  --field:        #ffffff;
+  --shadow:       0 1px 2px rgba(15, 76, 92, 0.06), 0 8px 24px rgba(15, 76, 92, 0.05);
+
+  /* type */
+  --f-display: 'Bricolage Grotesque', 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+  --f-body:    'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --f-mono:    'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --fs-name:    clamp(2.5rem, 8.2vw, 5.25rem);
+  --fs-strip:   clamp(0.72rem, 1.15vw, 0.95rem);
+  --fs-section: clamp(1rem, 1.55vw, 1.3rem);
+  --fs-sub:     clamp(0.9rem, 1.3vw, 1.1rem);
+  --fs-job:     clamp(1rem, 1.35vw, 1.2rem);
+  --fs-co:      clamp(0.84rem, 1.12vw, 1rem);
+  --fs-date:    clamp(0.68rem, 0.88vw, 0.8rem);
+  --fs-body:    clamp(0.9rem, 1.05vw, 1rem);
+  --fs-small:   clamp(0.82rem, 0.98vw, 0.92rem);
+  --fs-label:   clamp(0.66rem, 0.85vw, 0.76rem);
+
+  /* rhythm */
+  --gap:      clamp(0.75rem, 1.6vw, 1.25rem);
+  --gap-col:  clamp(1.5rem, 3vw, 2.75rem);
+  --pad-x:    clamp(1.1rem, 4vw, 2.75rem);
+  --radius:   16px;
+  --radius-sm: 12px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Dark mode is a neutral grey ground so the two brand colours do the talking:
+   coral keys the main column, teal keys the sidebar and the title strip. */
+[data-theme='dark'] {
+  --bg:          #1a1b1d;
+  --ink:         #ececeb;
+  --ink-mute:    rgba(236, 236, 235, 0.58);
+  --accent:      #ff7a7a;
+  --accent-soft: rgba(255, 122, 122, 0.12);
+  --accent-mid:  rgba(255, 122, 122, 0.28);
+  --on-accent:   #1a1a1a;
+  --teal:        #5cc6d6;
+  --teal-soft:   rgba(92, 198, 214, 0.12);
+  --teal-mid:    rgba(92, 198, 214, 0.28);
+  --card:        #232528;
+  --strip-bg:    #14606e;
+  --strip-fg:    #fffdf6;
+  --rule:        rgba(236, 236, 235, 0.13);
+  --field:       #232528;
+  --shadow:      0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Per-section accent. Unset in light mode, so it falls back to coral
+   everywhere and the Figma mock is reproduced exactly.
+   In dark mode teal carries every section; coral is held back for the
+   project subheaders inside a role, which is the only place it appears. */
+[data-theme='dark'] .panel {
+  --section:      var(--teal);
+  --section-soft: var(--teal-soft);
+  --section-mid:  var(--teal-mid);
+}
+
+/* ---- Base -------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3 { margin: 0; font-weight: 800; }
+a { color: inherit; }
+
+::selection { background: var(--accent-mid); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.5rem; left: 0.5rem;
+  z-index: 60;
+  padding: 0.5rem 0.9rem;
+  border-radius: 100px;
+  background: var(--strip-bg);
+  color: var(--strip-fg);
+  font: 600 0.8rem/1 var(--f-mono);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s var(--ease);
+}
+.skip-link:focus-visible { transform: none; }
+
+.page {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem) var(--pad-x) clamp(2.5rem, 6vw, 4rem);
+}
+
+/* ---- Reading progress -------------------------------------- */
+
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 3px;
+  pointer-events: none;
+}
+.progress__bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* ---- Masthead ---------------------------------------------- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.masthead__name {
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 96, 'wdth' 100;
+  font-size: var(--fs-name);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.022em;
+  text-transform: uppercase;
+  color: var(--ink);
+  overflow-wrap: break-word;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-style: normal;
+}
+.meta__loc {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.meta__row { display: flex; align-items: center; gap: 0.35em; }
+.meta__link {
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.18s var(--ease), color 0.18s var(--ease);
+}
+.meta__link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.copy {
+  display: grid;
+  place-items: center;
+  width: 1.5em; height: 1.5em;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease);
+}
+.copy svg { width: 0.92em; height: 0.92em; fill: none; stroke: currentColor; stroke-width: 1.4; }
+.copy:hover { background: var(--accent-soft); color: var(--accent); }
+.copy.is-done { color: var(--accent); background: var(--accent-soft); }
+
+/* ---- Title strip ------------------------------------------- */
+
+.strip {
+  padding: 0.62em 1.1em;
+  border-radius: var(--radius);
+  background: var(--strip-bg);
+  color: var(--strip-fg);
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 14, 'wdth' 100;
+  font-size: var(--fs-strip);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---- Toolbar ----------------------------------------------- */
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: var(--gap) 0;
+  padding: 0.6rem 0;
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s var(--ease);
+}
+.toolbar.is-stuck { border-bottom-color: var(--rule); }
+
+/* Blur is a desktop-only nicety — it is expensive on mobile GPUs. */
+@media (min-width: 1000px) {
+  .toolbar { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 15rem;
+  min-width: 11rem;
+  max-width: 22rem;
+}
+.field__icon {
+  position: absolute;
+  left: 0.7rem;
+  width: 0.95em; height: 0.95em;
+  fill: none; stroke: var(--ink-mute); stroke-width: 1.5; stroke-linecap: round;
+  pointer-events: none;
+}
+.field__input {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 2.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  background: var(--field);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: var(--fs-small);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field__input::placeholder { color: var(--ink-mute); }
+.field__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field__input::-webkit-search-cancel-button { display: none; }
+
+.field__clear {
+  position: absolute;
+  right: 0.45rem;
+  display: grid;
+  place-items: center;
+  width: 1.4rem; height: 1.4rem;
+  padding: 0;
+  border: 0; border-radius: 50%;
+  background: transparent;
+  color: var(--ink-mute);
+  cursor: pointer;
+}
+.field__clear svg { width: 0.85em; height: 0.85em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.field__clear:hover { color: var(--accent); background: var(--accent-soft); }
+
+.chips {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.chips::-webkit-scrollbar { display: none; }
+
+.chip, .btn {
+  flex: none;
+  padding: 0.38em 0.85em;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease),
+              border-color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.chip:hover, .btn:hover { border-color: var(--accent); color: var(--accent); }
+.chip:active, .btn:active { transform: translateY(1px); }
+.chip[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);   /* cream on coral is only ~2.4:1 — too low to read */
+  font-weight: 700;
+}
+
+.actions { display: flex; gap: 0.35rem; margin-left: auto; }
+
+/* A .btn sitting inside a section pill: pushed to the right edge, and opted
+   out of the pill's uppercase + display font, which it would inherit. */
+.btn--inline {
+  margin-left: auto;
+  padding: 0.3em 0.75em;
+  border-color: transparent;
+  color: var(--section, var(--accent));
+  text-transform: none;
+  font-variation-settings: normal;
+}
+.btn--inline:hover {
+  border-color: var(--section, var(--accent));
+  color: var(--section, var(--accent));
+  background: var(--bg);
+}
+
+.btn--icon { display: grid; place-items: center; width: 2.1em; padding: 0.38em; }
+.btn--icon svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+/* Show the theme you are switching TO, matching the button's label:
+   moon while light ("Switch to dark theme"), sun while dark. */
+.icon-sun { display: none; }
+[data-theme='dark'] .icon-moon { display: none; }
+[data-theme='dark'] .icon-sun  { display: block; }
+
+.count {
+  flex: 0 0 100%;
+  margin: 0;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  color: var(--ink-mute);
+}
+.count:empty { display: none; }
+
+/* ---- Column layout ----------------------------------------- */
+
+.columns {
+  display: grid;
+  gap: var(--gap-col);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'profile'
+    'experience'
+    'skills'
+    'education';
+}
+
+.panel--profile { grid-area: profile; }
+.panel--exp     { grid-area: experience; }
+.panel--skills  { grid-area: skills; }
+.panel--edu     { grid-area: education; }
+
+@media (min-width: 62rem) {
+  .columns {
+    column-gap: var(--gap-col);
+    row-gap: clamp(1rem, 2vw, 1.6rem);
+    grid-template-columns: minmax(0, 2.05fr) minmax(0, 1fr);
+    grid-template-areas:
+      'experience profile'
+      'experience skills'
+      'experience education'
+      'experience .';
+    align-items: start;
+  }
+  .panel--exp { grid-row: 1 / -1; }
+}
+
+/* ---- Section pills ----------------------------------------- */
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-bottom: 0.7em;
+  padding: 0.45em 0.9em;
+  border-radius: 100px;
+  background: var(--section-soft, var(--accent-soft));
+  color: var(--ink);
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 96, 'wdth' 100;
+  font-size: var(--fs-sub);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.pill--lg { font-size: var(--fs-section); }
+
+/* The heading is a child of the pill now, so it must not reintroduce the UA
+   h2 sizing — the pill owns the type. */
+.pill__title { font: inherit; }
+
+.pill__dot {
+  flex: none;
+  width: 0.5em; height: 0.5em;
+  border-radius: 0.25em;
+  background: var(--section, var(--accent));
+}
+
+/* ---- Profile ----------------------------------------------- */
+
+.panel--profile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  line-height: 1.5;
+}
+
+/* ---- Experience -------------------------------------------- */
+
+.jobs { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.job {
+  border-radius: var(--radius-sm);
+  transition: background 0.2s var(--ease);
+}
+.job.is-hidden { display: none; }
+
+.job__head {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.18s var(--ease);
+}
+.job__head:hover { background: var(--section-soft, var(--accent-soft)); }
+
+.job__title {
+  min-width: 0;
+  font-family: var(--f-display);
+  font-variation-settings: 'opsz' 96, 'wdth' 100;
+  font-size: var(--fs-job);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.job__co {
+  font-family: var(--f-body);
+  font-size: var(--fs-co);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--section, var(--accent));
+}
+.job__date {
+  font-family: var(--f-mono);
+  font-size: var(--fs-date);
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ink-mute);
+}
+/* The chevron points at what the click will do, not at the current state:
+   open role -> points up (click to close), closed role -> points down.
+   Right+bottom borders make a corner pointing south-east when unrotated, so
+   45deg reads as "down" and -135deg as "up". The trailing translate is in the
+   element's own pre-rotation frame, which re-centres the L for any angle. */
+.job__chev {
+  align-self: center;
+  width: 0.55em; height: 0.55em;
+  border-right: 1.5px solid var(--ink-mute);
+  border-bottom: 1.5px solid var(--ink-mute);
+  transform: rotate(-135deg) translate(-0.115em, -0.115em);
+  transition: transform 0.25s var(--ease), border-color 0.18s var(--ease);
+}
+.job__head:hover .job__chev { border-color: var(--section, var(--accent)); }
+.job[data-collapsed='true'] .job__chev {
+  transform: rotate(45deg) translate(-0.115em, -0.115em);
+}
+
+/* Collapse via grid rows: animates to content height with no JS measuring. */
+.job__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s var(--ease);
+}
+.job[data-collapsed='true'] .job__body { grid-template-rows: 0fr; }
+.job__clip { overflow: hidden; min-height: 0; }
+.job__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.15rem 0.6rem 0.9rem;
+  border-left: 2px solid var(--rule);
+  margin-left: 0.6rem;
+  padding-left: 0.85rem;
+  transition: border-color 0.2s var(--ease);
+}
+.job:hover .job__inner { border-left-color: var(--section-mid, var(--accent-mid)); }
+
+.job__lede { font-size: var(--fs-body); line-height: 1.45; }
+
+.proj { display: flex; flex-direction: column; gap: 0.3em; }
+.proj__name {
+  display: flex;
+  gap: 0.5em;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.proj__name::before { content: '•'; }
+
+.bullets { display: flex; flex-direction: column; gap: 0.28em; }
+.bullets li {
+  position: relative;
+  padding-left: 0.95em;
+  font-size: var(--fs-small);
+  line-height: 1.45;
+}
+.bullets li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--ink-mute);
+}
+.bullets strong { font-weight: 700; }
+.bullets code {
+  font-family: var(--f-mono);
+  font-size: 0.92em;
+  padding: 0.05em 0.3em;
+  border-radius: 4px;
+  background: var(--section-soft, var(--accent-soft));
+}
+
+.empty {
+  padding: 1.5rem 0.6rem;
+  font-family: var(--f-mono);
+  font-size: var(--fs-small);
+  color: var(--ink-mute);
+}
+
+mark.hit {
+  padding: 0.05em 0.1em;
+  border-radius: 3px;
+  background: var(--accent-mid);
+  color: inherit;
+}
+
+/* ---- Skills ------------------------------------------------ */
+
+.cards { display: flex; flex-direction: column; gap: 0.4rem; }
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  padding: 0.65em 0.8em;
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.card__label {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--section, var(--accent));
+}
+
+/* ---- Education --------------------------------------------- */
+
+.edu { display: flex; flex-direction: column; gap: 0.4em; font-size: var(--fs-small); }
+.edu li { display: flex; gap: 0.6em; line-height: 1.4; }
+.edu__num {
+  flex: none;
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  color: var(--section, var(--accent));
+  padding-top: 0.12em;
+}
+
+/* ---- Footer ------------------------------------------------ */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  color: var(--ink-mute);
+}
+.foot kbd {
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  font: inherit;
+  color: var(--ink);
+}
+
+/* ---- Reveal on scroll -------------------------------------- */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+/* ---- Small screens ----------------------------------------- */
+
+@media (max-width: 40rem) {
+  .masthead { align-items: flex-start; }
+  .meta { align-items: flex-start; }
+
+  .job__head {
+    grid-template-columns: 1fr auto;
+    row-gap: 0.15rem;
+  }
+  .job__title { grid-column: 1; }
+  .job__date  { grid-column: 1; grid-row: 2; }
+  .job__chev  { grid-column: 2; grid-row: 1 / span 2; }
+
+  .actions { margin-left: 0; }
+  .field { max-width: none; flex-basis: 100%; }
+}
+
+/* ---- Motion / contrast preferences -------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js .reveal { opacity: 1; transform: none; }
+}
+
+@media (prefers-contrast: more) {
+  :root { --ink-mute: var(--ink); --rule: var(--ink); }
+}
+
+/* ---- Print: back to the one-page Figma density --------------- */
+
+@media print {
+  @page { size: letter; margin: 0.4in; }
+
+  html, body {
+    background: #fff;
+    color: #0f4c5c;
+    font-size: 8.5pt;
+  }
+  :root {
+    --fs-name: 34pt;  --fs-strip: 7.5pt; --fs-section: 11pt; --fs-sub: 9.5pt;
+    --fs-job: 9pt;    --fs-co: 8pt;      --fs-date: 6.5pt;
+    --fs-body: 7pt;   --fs-small: 6.8pt; --fs-label: 6.5pt;
+    --gap: 8pt;       --gap-col: 14pt;   --pad-x: 0;
+  }
+
+  /* Paper always gets the light palette — the dark theme's teal is built for a
+     grey ground and would drop to roughly 2:1 on white. */
+  [data-theme='dark'] {
+    --ink:         #0f4c5c;
+    --ink-mute:    rgba(15, 76, 92, 0.55);
+    --accent:      #ff6b6b;
+    --accent-soft: rgba(255, 107, 107, 0.08);
+    --accent-mid:  rgba(255, 107, 107, 0.22);
+    --teal:        #0f4c5c;
+    --teal-soft:   rgba(15, 76, 92, 0.08);
+    --teal-mid:    rgba(15, 76, 92, 0.22);
+    --card:        #f0f2f5;
+    --strip-bg:    #0f4c5c;
+    --rule:        rgba(15, 76, 92, 0.12);
+  }
+  [data-theme='dark'] .panel {
+    --section:      var(--accent);
+    --section-soft: var(--accent-soft);
+    --section-mid:  var(--accent-mid);
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .progress, .toolbar, .skip-link, .copy, .foot__hint, .empty,
+  .btn--inline { display: none !important; }
+
+  .page { max-width: none; padding: 0; }
+
+  /* Everything prints open, whatever the on-screen state is. */
+  .job__body { grid-template-rows: 1fr !important; }
+  .job.is-hidden { display: block !important; }
+  .job__chev { display: none; }
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+  mark.hit { background: transparent; }
+
+  .columns {
+    grid-template-columns: 2.05fr 1fr;
+    grid-template-areas:
+      'experience profile'
+      'experience skills'
+      'experience education'
+      'experience .';
+  }
+  .panel--exp { grid-row: 1 / -1; }
+
+  .job, .card, .job__head { break-inside: avoid; }
+  .job__head { padding: 2pt 0; }
+  .job__inner { padding-bottom: 4pt; }
+  .card:hover { transform: none; box-shadow: none; }
+}

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alice Q. Wong — Design Engineer</title>
+<meta name="description" content="Alice Q. Wong — design engineer with 14 years across seed-stage startups and global enterprise teams, sitting between Product, Design, and Engineering.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f9f9f9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c2027" media="(prefers-color-scheme: dark)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&amp;family=Figtree:wght@400;500;600;700&amp;family=Geist+Mono:wght@400..700&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+
+<script>
+  /* Set theme + the `js` flag before first paint so nothing flashes. */
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js');
+    try {
+      var saved = localStorage.getItem('cv-theme');
+      d.dataset.theme = saved ||
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    } catch (e) { /* private mode — fall back to the light default */ }
+  })();
+</script>
+</head>
+
+<body>
+<div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+<a class="skip-link" href="#experience">Skip to work experience</a>
+
+<div class="page">
+
+  <header class="masthead reveal">
+    <h1 class="masthead__name">Alice Q. Wong</h1>
+    <address class="meta">
+      <p class="meta__loc">New York, NY</p>
+      <p class="meta__row">
+        <a class="meta__link" href="mailto:alice@valour.me">alice@valour.me</a>
+        <button class="copy" type="button" data-copy="alice@valour.me" aria-label="Copy email address">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5.5 5.5V3.25A1.25 1.25 0 0 1 6.75 2h6A1.25 1.25 0 0 1 14 3.25v6a1.25 1.25 0 0 1-1.25 1.25H10.5" /><rect x="2" y="5.5" width="8.5" height="8.5" rx="1.25" /></svg>
+        </button>
+      </p>
+      <p class="meta__row">
+        <a class="meta__link" href="tel:+19093194109">+1 (909) 319-4109</a>
+        <button class="copy" type="button" data-copy="+1 (909) 319-4109" aria-label="Copy phone number">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5.5 5.5V3.25A1.25 1.25 0 0 1 6.75 2h6A1.25 1.25 0 0 1 14 3.25v6a1.25 1.25 0 0 1-1.25 1.25H10.5" /><rect x="2" y="5.5" width="8.5" height="8.5" rx="1.25" /></svg>
+        </button>
+      </p>
+    </address>
+  </header>
+
+  <p class="strip reveal">Design Engineer · Product Design × Frontend Team Lead</p>
+
+  <div class="toolbar" id="toolbar">
+    <div class="field">
+      <svg class="field__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="4.25" /><path d="M10.2 10.2 14 14" /></svg>
+      <input id="q" class="field__input" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Filter roles — React, Canvas, Mentor…"
+             aria-label="Filter work experience by keyword">
+      <button class="field__clear" type="button" id="clear" aria-label="Clear filter" hidden>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m4.5 4.5 7 7m0-7-7 7" /></svg>
+      </button>
+    </div>
+
+    <div class="chips" role="group" aria-label="Quick filters">
+      <button class="chip" type="button" data-term="react" aria-pressed="false">React</button>
+      <button class="chip" type="button" data-term="typescript" aria-pressed="false">TypeScript</button>
+      <button class="chip" type="button" data-term="design system" aria-pressed="false">Design systems</button>
+      <button class="chip" type="button" data-term="prototyp" aria-pressed="false">Prototyping</button>
+      <button class="chip" type="button" data-term="canvas" aria-pressed="false">Canvas</button>
+      <button class="chip" type="button" data-term="mentor" aria-pressed="false">Mentor</button>
+    </div>
+
+    <div class="actions">
+      <button class="btn" type="button" id="print">Print</button>
+      <button class="btn btn--icon" type="button" id="theme" aria-pressed="false" aria-label="Switch to dark theme">
+        <svg class="icon-sun" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3.1" /><path d="M8 .9v1.8M8 13.3v1.8M15.1 8h-1.8M2.7 8H.9M13 3l-1.3 1.3M4.3 11.7 3 13M13 13l-1.3-1.3M4.3 4.3 3 3" /></svg>
+        <svg class="icon-moon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.5 9.6A5.9 5.9 0 0 1 6.4 2.5a5.9 5.9 0 1 0 7.1 7.1Z" /></svg>
+      </button>
+    </div>
+
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+  </div>
+
+  <main class="columns">
+
+    <!-- ── Profile ─────────────────────────────────────────── -->
+    <section class="panel panel--profile reveal" aria-label="Profile">
+      <p>Design engineer with 14 years across seed-stage startups and global enterprise teams. I sit between Product, Design, and Engineering: designing in code, so stakeholders and beta users get a real feel about how the system will behave.</p>
+      <p>I do the jobs the team is missing, whether that's running Scrum, turning user tests into a roadmap, supporting customers, or stepping into design mid-sprint. Small teams get one hire who covers multiple seats.</p>
+    </section>
+
+    <!-- ── Work experience ─────────────────────────────────── -->
+    <section class="panel panel--exp" id="experience" aria-labelledby="exp-title">
+      <div class="pill pill--lg reveal">
+        <span class="pill__dot" aria-hidden="true"></span>
+        <h2 class="pill__title" id="exp-title">Work Experience</h2>
+        <button class="btn btn--inline" type="button" id="toggleAll" aria-pressed="false" aria-controls="jobs">Collapse all</button>
+      </div>
+
+      <div class="jobs" id="jobs">
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-0">
+            <span class="job__title">Senior Creative Technologist <span class="job__co">// Ernst &amp; Young LLP, Consulting</span></span>
+            <span class="job__date">July 2022 – Present</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-0">
+            <div class="job__clip"><div class="job__inner">
+              <p class="job__lede">Embedded on client product teams as the design-engineering lead: prototyping, frontend architecture, design systems, and mentoring — plus whatever the engagement needed to ship.</p>
+
+              <div class="proj">
+                <h3 class="proj__name">Global Financial Firm — Disaster Recovery Platform</h3>
+                <ul class="bullets">
+                  <li>Founding EY engineer driving technical execution on a platform housing emergency plans for <strong>3,000+ systems</strong>; built an interactive React prototype, with Copilot agents in the loop, that won leadership buy-in before production work began.</li>
+                  <li>Led onboarding and training for <strong>hundreds of users</strong> on a new AI generation feature, driving the early adoption that turned into a <strong>$100K contract extension</strong>.</li>
+                  <li>Mentored junior developers through architecture and feature-planning discussions.</li>
+                </ul>
+              </div>
+
+              <div class="proj">
+                <h3 class="proj__name">Cruise Line — Immersive Guest Experience</h3>
+                <ul class="bullets">
+                  <li>Directed UI developers across two independent workstreams sharing one design library, coaching juniors toward performant, readable, reusable code and helping them delegate menial work to Copilot agents.</li>
+                  <li>Crossed into design and delivery when gaps appeared: produced Figma solutions with the design team for unaddressed UX problems, and partnered with project managers to sequence tickets across sprints, increasing velocity.</li>
+                </ul>
+              </div>
+
+              <div class="proj">
+                <h3 class="proj__name">Multimedia Talent Agency — Greenfield Platform</h3>
+                <ul class="bullets">
+                  <li>Founding frontend developer to create a reusable dynamic form framework that saved months of development. Built and extended the design system, mapped user flows as state diagrams the whole team could read, designed micro-interactions.</li>
+                  <li>Served as <strong>Scrum Master</strong> alongside the engineering work, and ran user-testing observation — documenting errors, bugs, and feedback into an affinity map that became the prioritization roadmap.</li>
+                </ul>
+              </div>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-1">
+            <span class="job__title">Designer &amp; UX Engineer <span class="job__co">// Lynxtool</span></span>
+            <span class="job__date">January 2021 – March 2022</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-1">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Designed a node-based programming tool in Figma and created the design system behind the node editor.</li>
+                <li>Built it in TypeScript with HTML5 <code>&lt;canvas&gt;</code> Context2D and Svelte, visualizing abstract programming concepts — and supported the founder on the Python language interpreter when the work needed hands.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-2">
+            <span class="job__title">Frontend Engineer <span class="job__co">// Stedi Inc.</span></span>
+            <span class="job__date">July 2020 – December 2020</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-2">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Partnered with Product and backend teams to design a web application for B2B logistics and transaction messages.</li>
+                <li>Built features in React, EmotionJS, and TypeScript.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-3">
+            <span class="job__title">Designer &amp; UX Engineer <span class="job__co">// Dark Inc.</span></span>
+            <span class="job__date">June 2018 – June 2020</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-3">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Worked directly with the CEO and CTO to design editor features that made backend development approachable for programmers of every background.</li>
+                <li>Owned the frontend codebase end to end: code review, rendering and performance optimization, and advocating for user experience in every bug fix and feature.</li>
+                <li>Ran customer support for users building APIs in Dark, then fed what I learned back into specs, style and implementation guidelines, and scoped designs that fit real engineering capacity.</li>
+                <li>Implemented features in OCaml and ReasonML whenever engineering resources ran low, and onboarded new engineers onto the Elm/OCaml stack.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-4">
+            <span class="job__title">Sr. Frontend Developer, Consultant <span class="job__co">// Techolutions → J.Crew</span></span>
+            <span class="job__date">June 2017 – January 2018</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-4">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Migrated jcrew.com from Backbone.js to React and A/B tested features to drive sales.</li>
+                <li>Built proofs of concept that helped the designer define specifications for immersive product detail pages.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-5">
+            <span class="job__title">Android Software Engineer <span class="job__co">// JW Player / Longtail Video</span></span>
+            <span class="job__date">April 2016 – October 2016</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-5">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Prototyped the new mobile web player in Framer.</li>
+                <li>Investigated and fixed device-specific issues in the Android SDK.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-6">
+            <span class="job__title">Full Stack Developer <span class="job__co">// Peloton Cycle</span></span>
+            <span class="job__date">November 2014 – March 2016</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-6">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Built an end-to-end solution generating per-ride metrics images for riders to share on social media.</li>
+                <li>Developed website features in Angular plus the internal CMS and Python API; researched NYC spin and boutique fitness studios to inform product decisions.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+        <article class="job reveal">
+          <button class="job__head" type="button" aria-expanded="true" aria-controls="job-7">
+            <span class="job__title">Lead Frontend Developer <span class="job__co">// Bytemark Inc.</span></span>
+            <span class="job__date">July 2013 – October 2014</span>
+            <span class="job__chev" aria-hidden="true"></span>
+          </button>
+          <div class="job__body" id="job-7">
+            <div class="job__clip"><div class="job__inner">
+              <ul class="bullets">
+                <li>Owned the CMS clients used to manage ticket sales, and built a web portal for bulk mobile ticket purchases across transit platforms.</li>
+                <li>Prototyped interactive mobile ticket designs in HTML5 canvas, video, and CSS3; championed an integration connecting Phabricator and Bitbucket to track tasks and release cycles.</li>
+              </ul>
+            </div></div>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="empty" id="empty" hidden>No roles match that filter.</p>
+    </section>
+
+    <!-- ── Skills ──────────────────────────────────────────── -->
+    <section class="panel panel--skills reveal" aria-labelledby="skills-title">
+      <h2 class="pill" id="skills-title"><span class="pill__dot" aria-hidden="true"></span>Skills Set</h2>
+      <div class="cards">
+        <div class="card">
+          <h3 class="card__label">Design</h3>
+          <p>Figma · Adobe XD · Photoshop · After Effects · Animate · Sketch · Prototyping (Framer, Principle, Origami) · Design systems</p>
+          <p>Micro-interactions · User testing &amp; affinity mapping</p>
+        </div>
+        <div class="card">
+          <h3 class="card__label">Engineering</h3>
+          <p>TypeScript / JavaScript (React, Svelte, Vue, Angular, D3.js, Three.js, WebGL, Canvas Context2D) · Python · OCaml / ReasonML · Elm · C# · C++ (OpenGL) · Java (Android, Processing) · Swift · HTML · CSS · LaTeX</p>
+        </div>
+        <div class="card">
+          <h3 class="card__label">AI Toolset</h3>
+          <p>Claude Code, VSCode Copilot</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Education ───────────────────────────────────────── -->
+    <section class="panel panel--edu reveal" aria-labelledby="edu-title">
+      <h2 class="pill" id="edu-title"><span class="pill__dot" aria-hidden="true"></span>Education</h2>
+      <ol class="edu">
+        <li><span class="edu__num">[01]</span><span>M.S. Computer Science, research focus in HCI — Stony Brook University, 2012</span></li>
+        <li><span class="edu__num">[02]</span><span>B.S. Applied Mathematics &amp; Computer Science — Stony Brook University, 2010</span></li>
+        <li><span class="edu__num">[03]</span><span>UX/UI Design Bootcamp — Ironhack Barcelona, 2018</span></li>
+        <li><span class="edu__num">[04]</span><span>User Experience Design Certificate — General Assembly, 2015</span></li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <p>Alice Q. Wong · New York, NY</p>
+    <p class="foot__hint">Press <kbd>/</kbd> to filter · <kbd>Esc</kbd> to clear</p>
+  </footer>
+
+</div>
+
+<p class="sr-only" id="live" role="status" aria-live="polite"></p>
+<script src="code.js" defer></script>
+</body>
+</html>
